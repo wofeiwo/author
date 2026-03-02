@@ -44,13 +44,13 @@ export default function TourOverlay({ onOpenHelp }) {
             targetId: 'tour-help',
             title: t('tour.step5Title'),
             content: t('tour.step5Content'),
-            placement: 'left'
+            placement: 'top'
         },
         {
             targetId: 'tour-github',
             title: t('tour.step6Title'),
             content: t('tour.step6Content'),
-            placement: 'left'
+            placement: 'top'
         }
     ], [t]);
 
@@ -90,6 +90,11 @@ export default function TourOverlay({ onOpenHelp }) {
                 if (retryEl) {
                     const r = retryEl.getBoundingClientRect();
                     setTargetRect({ x: r.x, y: r.y, width: r.width, height: r.height });
+                } else {
+                    // Fallback: show tooltip centered when target element not found
+                    const cx = window.innerWidth / 2;
+                    const cy = window.innerHeight / 2;
+                    setTargetRect({ x: cx - 1, y: cy - 1, width: 2, height: 2 });
                 }
             }, 300);
         }
@@ -193,6 +198,8 @@ export default function TourOverlay({ onOpenHelp }) {
             tooltipStyle = { top: rY + rH / 2, right: windowSize.w - rX + 20, transform: 'translateY(-50%)' };
         } else if (step.placement === 'bottom') {
             tooltipStyle = { top: rY + rH + 20, left: rX + rW / 2, transform: 'translateX(-50%)' };
+        } else if (step.placement === 'top') {
+            tooltipStyle = { bottom: windowSize.h - rY + 20, left: rX + rW / 2, transform: 'translateX(-50%)' };
         } else if (step.placement === 'center') {
             tooltipStyle = { top: rY + rH / 2, left: rX + rW / 2, transform: 'translate(-50%, -50%)' };
         }

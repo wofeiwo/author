@@ -117,6 +117,12 @@ const DEFAULT_SETTINGS = {
         embedApiKey: '',
         embedBaseUrl: 'https://open.bigmodel.cn/api/paas/v4',
         embedModel: 'embedding-3',
+        // 高级模型参数
+        useAdvancedParams: false,   // 总开关：关闭时使用默认值
+        temperature: 1,             // 0 ~ 2
+        topP: 0.95,                 // 0 ~ 1
+        maxContextLength: 200000,   // 最大上下文 token
+        maxOutputTokens: 65536,     // 最大输出 token
     },
 
     // 作品基本信息

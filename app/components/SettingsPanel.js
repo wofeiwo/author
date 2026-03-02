@@ -799,6 +799,7 @@ const PROVIDERS = [
     { key: 'gemini-native', label: 'Gemini（原生格式）', baseUrl: 'https://generativelanguage.googleapis.com/v1beta', models: ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash', 'gemini-1.5-pro'] },
     { key: 'openai-responses', label: 'OpenAI Responses', baseUrl: 'https://api.openai.com/v1', models: [] },
     { key: 'siliconflow', label: 'SiliconFlow (硅基流动)', baseUrl: 'https://api.siliconflow.cn/v1', models: ['deepseek-ai/DeepSeek-V3', 'Qwen/Qwen2.5-72B-Instruct', 'THUDM/glm-4-9b-chat'] },
+    { key: 'volcengine', label: '火山引擎 (豆包)', baseUrl: 'https://ark.cn-beijing.volces.com/api/v3', models: [] },
     { key: 'moonshot', label: 'Moonshot (Kimi)', baseUrl: 'https://api.moonshot.cn/v1', models: ['moonshot-v1-8k', 'moonshot-v1-32k', 'moonshot-v1-128k'] },
     { key: 'custom', label: '自定义 (OpenAI兼容)', baseUrl: '', models: [] },
 ];
@@ -1052,6 +1053,102 @@ function ApiConfigForm({ data, onChange }) {
                             </div>
                         </>
                     )}
+                </div>
+            )}
+
+            {/* 高级模型参数 */}
+            <div style={{ marginTop: 24, marginBottom: 14, paddingTop: 16, borderTop: '1px solid var(--border-light)' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)' }}>
+                    <input
+                        type="checkbox"
+                        checked={data.useAdvancedParams || false}
+                        onChange={e => update('useAdvancedParams', e.target.checked)}
+                        style={{ margin: 0 }}
+                    />
+                    {t('apiConfig.advancedParamsTitle')}
+                </label>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4, paddingLeft: 22 }}>
+                    {t('apiConfig.advancedParamsDesc')}
+                </div>
+            </div>
+
+            {data.useAdvancedParams && (
+                <div style={{ padding: '16px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)', marginBottom: 20 }}>
+                    {/* Temperature */}
+                    <div style={{ marginBottom: 14 }}>
+                        <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 5 }}>
+                            {t('apiConfig.temperature')}
+                        </label>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <input
+                                type="range" min="0" max="2" step="0.05"
+                                value={data.temperature ?? 1}
+                                onChange={e => update('temperature', parseFloat(e.target.value))}
+                                style={{ flex: 1, accentColor: 'var(--accent)' }}
+                            />
+                            <input
+                                type="number" min="0" max="2" step="0.05"
+                                className="modal-input"
+                                style={{ width: 72, margin: 0, padding: '5px 8px', fontSize: 13, textAlign: 'center' }}
+                                value={data.temperature ?? 1}
+                                onChange={e => update('temperature', parseFloat(e.target.value) || 0)}
+                            />
+                        </div>
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{t('apiConfig.temperatureDesc')}</div>
+                    </div>
+
+                    {/* Top P */}
+                    <div style={{ marginBottom: 14 }}>
+                        <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 5 }}>
+                            {t('apiConfig.topP')}
+                        </label>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <input
+                                type="range" min="0" max="1" step="0.05"
+                                value={data.topP ?? 0.95}
+                                onChange={e => update('topP', parseFloat(e.target.value))}
+                                style={{ flex: 1, accentColor: 'var(--accent)' }}
+                            />
+                            <input
+                                type="number" min="0" max="1" step="0.05"
+                                className="modal-input"
+                                style={{ width: 72, margin: 0, padding: '5px 8px', fontSize: 13, textAlign: 'center' }}
+                                value={data.topP ?? 0.95}
+                                onChange={e => update('topP', parseFloat(e.target.value) || 0)}
+                            />
+                        </div>
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{t('apiConfig.topPDesc')}</div>
+                    </div>
+
+                    {/* 最大上下文长度 */}
+                    <div style={{ marginBottom: 14 }}>
+                        <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 5 }}>
+                            {t('apiConfig.maxContextLength')}
+                        </label>
+                        <input
+                            type="number" min="1024" step="1024"
+                            className="modal-input"
+                            style={{ margin: 0, width: 160, padding: '5px 8px', fontSize: 13 }}
+                            value={data.maxContextLength ?? 200000}
+                            onChange={e => update('maxContextLength', parseInt(e.target.value) || 4096)}
+                        />
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{t('apiConfig.maxContextLengthDesc')}</div>
+                    </div>
+
+                    {/* 最大输出 Token */}
+                    <div style={{ marginBottom: 0 }}>
+                        <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 5 }}>
+                            {t('apiConfig.maxOutputTokens')}
+                        </label>
+                        <input
+                            type="number" min="256" step="256"
+                            className="modal-input"
+                            style={{ margin: 0, width: 160, padding: '5px 8px', fontSize: 13 }}
+                            value={data.maxOutputTokens ?? 65536}
+                            onChange={e => update('maxOutputTokens', parseInt(e.target.value) || 4096)}
+                        />
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{t('apiConfig.maxOutputTokensDesc')}</div>
+                    </div>
                 </div>
             )}
 

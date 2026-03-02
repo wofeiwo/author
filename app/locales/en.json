@@ -455,7 +455,17 @@
     "networkError": "Network connection failed",
     "fetchModelsFailed": "Failed to fetch model list",
     "fetchEmbedModelsFailed": "Failed to fetch embedding model list",
-    "embedApiPrefix": "Embedding API: "
+    "embedApiPrefix": "Embedding API: ",
+    "advancedParamsTitle": "Advanced Model Parameters",
+    "advancedParamsDesc": "When enabled, customize temperature, sampling, and output limits. When disabled, defaults are used. Editor and chat share the same parameters.",
+    "temperature": "Temperature",
+    "temperatureDesc": "Higher = more random, lower = more deterministic. Recommended 0.7–1.2",
+    "topP": "Top P (Nucleus Sampling)",
+    "topPDesc": "Controls sampling range, 1.0 = no filtering. Recommended 0.9–1.0",
+    "maxContextLength": "Max Context Length",
+    "maxContextLengthDesc": "Maximum context tokens sent to the model",
+    "maxOutputTokens": "Max Output Tokens",
+    "maxOutputTokensDesc": "Maximum tokens per model response"
   },
   "preferences": {
     "intro": "You can change your language and visual theme preferences here at any time. All changes take effect immediately and are saved locally.",

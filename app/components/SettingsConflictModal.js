@@ -133,7 +133,14 @@ ${importedFields}
             const res = await fetch(apiEndpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ systemPrompt, userPrompt, apiConfig, maxTokens: 2000 }),
+                body: JSON.stringify({
+                    systemPrompt, userPrompt, apiConfig,
+                    ...(apiConfig?.useAdvancedParams ? {
+                        maxTokens: apiConfig.maxOutputTokens || 65536,
+                        temperature: apiConfig.temperature ?? 1,
+                        topP: apiConfig.topP ?? 0.95,
+                    } : { maxTokens: 4096 }),
+                }),
             });
 
             if (!res.ok) {

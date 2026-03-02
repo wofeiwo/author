@@ -5,7 +5,7 @@ export const runtime = 'edge';
 
 export async function POST(request) {
     try {
-        const { systemPrompt, userPrompt, apiConfig, maxTokens } = await request.json();
+        const { systemPrompt, userPrompt, apiConfig, maxTokens, temperature, topP } = await request.json();
 
         const apiKey = apiConfig?.apiKey;
         const baseUrl = (apiConfig?.baseUrl || 'https://api.anthropic.com').replace(/\/$/, '');
@@ -23,12 +23,14 @@ export async function POST(request) {
         // 构造 Messages API 请求体
         const requestBody = {
             model,
-            max_tokens: maxTokens || 2000,
+            max_tokens: maxTokens || 4096,
             system: systemPrompt,
             messages: [
                 { role: 'user', content: userPrompt }
             ],
             stream: true,
+            ...(temperature != null ? { temperature } : {}),
+            ...(topP != null ? { top_p: topP } : {}),
         };
 
         // 如果模型支持 extended thinking (claude-3-7-sonnet)，可以启用

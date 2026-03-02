@@ -455,7 +455,17 @@
         "networkError": "网络连接失败",
         "fetchModelsFailed": "拉取模型列表失败",
         "fetchEmbedModelsFailed": "拉取向量模型列表失败",
-        "embedApiPrefix": "向量 API: "
+        "embedApiPrefix": "向量 API: ",
+        "advancedParamsTitle": "高级模型参数",
+        "advancedParamsDesc": "开启后可自定义温度、采样参数和输出长度等参数，关闭则使用默认值。编辑区和对话区共用同一组参数。",
+        "temperature": "温度 (Temperature)",
+        "temperatureDesc": "值越高输出越随机，越低越确定。推荐 0.7~1.2",
+        "topP": "Top P (核采样)",
+        "topPDesc": "控制采样范围，1.0 = 不过滤。推荐 0.9~1.0",
+        "maxContextLength": "最大上下文长度",
+        "maxContextLengthDesc": "发送给模型的最大上下文 token 数",
+        "maxOutputTokens": "最大输出 Token",
+        "maxOutputTokensDesc": "模型单次回复的最大 token 数"
     },
     "preferences": {
         "intro": "在这里可以随时更改应用程序的语言和视觉主题偏好。所有的更改都会实时生效并保存在本地。",

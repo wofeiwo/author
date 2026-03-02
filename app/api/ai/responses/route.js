@@ -5,7 +5,7 @@ export const runtime = 'edge';
 
 export async function POST(request) {
     try {
-        const { systemPrompt, userPrompt, apiConfig, maxTokens } = await request.json();
+        const { systemPrompt, userPrompt, apiConfig, maxTokens, temperature, topP } = await request.json();
 
         const apiKey = apiConfig?.apiKey;
         const baseUrl = (apiConfig?.baseUrl || 'https://api.openai.com/v1').replace(/\/$/, '');
@@ -28,6 +28,8 @@ export async function POST(request) {
                 { role: 'user', content: userPrompt },
             ],
             stream: true,
+            ...(temperature != null ? { temperature } : {}),
+            ...(topP != null ? { top_p: topP } : {}),
         };
 
         // 添加思考等级（默认 medium）
